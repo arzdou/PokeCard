@@ -1,5 +1,30 @@
+from card_scripts import create_card
 import tweepy
 import json
+
+
+class TweetsListener(tweepy.StreamListener):
+
+    def __init__(self,  api):
+        self.api = api
+
+    def on_connect(self):
+        print("Estoy conectado")
+
+    def on_status(self, status):
+        print("Creando trajeta para "+status.user.name)
+        create_card()
+        print("Carta creada")
+        card_media = self.api.media_upload("output.png")
+        self.api.update_status("Aquí tienes!",
+                               in_reply_to_status_id = status.id,
+                               media_ids = [card_media.media_id],
+                               auto_populate_reply_metadata=True)
+        print("Se ha enviado el tweet")
+
+    def on_error(self, status_code):
+        print("Oh no, ha ocurrido un error", status_code)
+
 
 def main():
     with open("keys.json", "r") as infile:
@@ -8,11 +33,15 @@ def main():
     auth = tweepy.OAuthHandler(api_key, api_skey)
     auth.set_access_token(access_token, access_stoken)
 
-    api = tweepy.API(auth)
+    api = tweepy.API(auth, wait_on_rate_limit=True,
+                     wait_on_rate_limit_notify=True)
 
-    public_tweets = api.home_timeline()
-    for tweet in public_tweets:
-        print(tweet.text)
+    stream = TweetsListener(api)
+    sreamingApi = tweepy.Stream(auth=api.auth, listener=stream)
+
+    sreamingApi.filter(
+        track=["@PokeCard_bot"]
+    )
 
 if __name__=="__main__":
     main()
