@@ -3,8 +3,7 @@ from PIL import Image
 
 class TrainerCard:
     def __init__(self):
-        self.px = 96
-        self.id_pokes = sample(range(151), 6)
+        self.id_pokes = sample(range(1,152), 6)
 
     def create_card(self):
         images_pokes = []
@@ -13,10 +12,15 @@ class TrainerCard:
             # composite = Image.composite(image, Image.new('RGBA', image.size, 'white'), image)
             images_pokes.append(image)
 
-        self.card_template = Image.open("images/card_template.png").convert("RGBA")
-        self.card = Image.new("RGBA", self.card_template.size, 'white')
+        card_template = Image.open("images/card_template.png").convert("RGBA")
+        self.card = Image.new("RGBA", card_template.size, 'white')
+
+        x0, y0 = image.size
         for i, image in enumerate(images_pokes):
-            self.card.paste(image, (self.px*i, 0), image)
+            x = 250 + 1.8*x0*(i%3)
+            y = 100 + 1.3*y0*(i//3)
+            self.card.paste(image, (int(x), int(y)), image)
+        self.card.paste(card_template, (0, 0), card_template)
 
     def show_card(self):
         try:
