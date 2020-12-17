@@ -10,8 +10,9 @@ def create_card(user=None):
     id_pokes = sample(range(1,152), 6)
 
     try:
-        name = user.name
+        name = user.screen_name
     except Exception as e:
+        print("Name error: ", e)
         name = "user"
 
     images_pokes = []
@@ -39,8 +40,9 @@ def create_card(user=None):
 
     card.paste(card_template, (0, 0), card_template)
 
+    font = ImageFont.truetype('images/fonts/LEMONMILK-Regular.otf', 16)
     draw = ImageDraw.Draw(card)
-    draw.text = ((resize_factor*70, resize_factor*190), "Heymacarena", (250,0,0))
+    draw.text((resize_factor*450, resize_factor*45), name, (0,0,0), font=font)
 
     card.save("output.png")
     return card

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from src.card_scripts import create_card
+from src.sentiment import extract_info
 from time import sleep
 import tweepy
 import json
@@ -15,10 +16,13 @@ class TweetsListener(tweepy.StreamListener):
 
     def on_status(self, status):
         if status.in_reply_to_status_id is not None: return
-        create_card(status)
+
+        create_card(status.user)
+        p, n, l = extract_info(self.api, status.user)
+
         card_media = self.api.media_upload("output.png")
-        sleep(10)
-        self.api.update_status("Aquí tienes @{}!".format(status.user.screen_name),
+        string = "Aquí tienes @{}!\nAdemás he detectado {} tweets positivos y {} tweets negativos en tus últimos 200 tweets".format(status.user.screen_name, p, n, l)
+        self.api.update_status(string,
                                status.id,
                                media_ids = [card_media.media_id],
                                auto_populate_reply_metadata=True)
