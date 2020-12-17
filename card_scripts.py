@@ -17,26 +17,28 @@ def create_card(user=None):
     images_pokes = []
     for id_p in id_pokes:
         image = Image.open("images/pokemon/{:d}.png".format(id_p)).convert("RGBA")
-        images_pokes.append(image.resize([s*1 for s in image.size]))
+        image_cropped = image.crop(image.getbbox())
+        images_pokes.append(image_cropped)
 
     image_trainer = Image.open("images/trainers/{}.png".format(id_trainer)).convert("RGBA")
 
     card_template = Image.open("images/card_template.png").convert("RGBA")
-    card_template = card_template.resize([int(s*1) for s in card_template.size])
+    resize_factor = 0.7
+    card_template = card_template.resize([int(s*resize_factor) for s in card_template.size])
 
     card = Image.new("RGBA", card_template.size, 'white')
 
     for i, image in enumerate(images_pokes):
-        x = 230 + 170*(i%3)
-        y = 100 + 115*(i//3)
+        x =resize_factor*(300 + 170*(i%3)) - image.size[0]//2
+        y = resize_factor*(150 + 115*(i//3)) - image.size[1]//2
         card.paste(image, (int(x), int(y)), image)
 
-    card.paste(image_trainer, (70,150), image_trainer)
+    card.paste(image_trainer, (int(resize_factor*70), int(resize_factor*170)), image_trainer)
 
     card.paste(card_template, (0, 0), card_template)
 
     draw = ImageDraw.Draw(card)
-    draw.text = ((70, 190), "Heymacarena", (250,0,0))
+    draw.text = ((resize_factor*70, resize_factor*190), "Heymacarena", (250,0,0))
 
     card.save("output.png")
     return card
