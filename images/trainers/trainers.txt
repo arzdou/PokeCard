@@ -653,7 +653,6 @@ teamrocket
 theroyal
 thorton
 tierno
-trainers.txt
 triathletebikerf-gen3
 triathletebikerm-gen3
 triathleterunnerf-gen3

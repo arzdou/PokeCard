@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from card_scripts import create_card
+from src.card_scripts import create_card
 from time import sleep
 import tweepy
 import json

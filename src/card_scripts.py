@@ -33,7 +33,9 @@ def create_card(user=None):
         y = resize_factor*(150 + 115*(i//3)) - image.size[1]//2
         card.paste(image, (int(x), int(y)), image)
 
-    card.paste(image_trainer, (int(resize_factor*70), int(resize_factor*170)), image_trainer)
+    x_trainer = resize_factor*60
+    y_trainer = resize_factor*150
+    card.paste(image_trainer, (int(x_trainer), int(y_trainer)), image_trainer)
 
     card.paste(card_template, (0, 0), card_template)
 
