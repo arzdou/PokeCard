@@ -1,2 +1,2 @@
-# tweetbot
-Small bot project
+# PokeCard
+Small bot project, will improve readme in the future
