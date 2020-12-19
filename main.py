@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from src.card_scripts import create_card
 from src.sentiment import extract_info
-from time import sleep
 import tweepy
 import json
 
@@ -9,6 +8,7 @@ import json
 class TweetsListener(tweepy.StreamListener):
 
     def __init__(self,  api):
+        super().__init__()
         self.api = api
 
     def on_connect(self):
@@ -18,12 +18,12 @@ class TweetsListener(tweepy.StreamListener):
         if status.in_reply_to_status_id is not None: return
 
         create_card(status.user)
-        p, n, l = extract_info(self.api, status.user)
+        info = extract_info(self.api, status.user)
 
         card_media = self.api.media_upload("output.png")
-        string = "Aquí tienes @{}!\nAdemás he detectado {} tweets positivos y {} tweets negativos en tus últimos 200 tweets".format(status.user.screen_name, p, n, l)
-        self.api.update_status(string,
-                               status.id,
+        string = "Aquí tienes @{}!\nAdemás he detectado {} tweets positivos y " \
+                 "{} tweets negativos en tus últimos 200 tweets".format(status.user.screen_name, *info)
+        self.api.update_status(string, status.id,
                                media_ids = [card_media.media_id],
                                auto_populate_reply_metadata=True)
         print("Tarjeta creada para "+status.user.name)

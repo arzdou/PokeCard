@@ -10,7 +10,7 @@ auth.set_access_token(access_token, access_stoken)
 
 api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
-user = api.get_user("arass42")
+user = api.get_user("arzdou")
 
 df = extract_info(api, user)
 print(df)

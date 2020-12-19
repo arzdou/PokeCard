@@ -1,7 +1,6 @@
 from random import sample
 from PIL import Image, ImageFont, ImageDraw
-import json
-import tweepy
+
 
 def create_card(user=None):
     with open("images/trainers/trainers.txt", "r") as file:

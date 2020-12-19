@@ -1,7 +1,6 @@
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from googletrans import Translator
 import pandas as pd
-import tweepy
 import re
 
 def extract_info(api, user):
