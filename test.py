@@ -19,13 +19,13 @@ def login():
 
 
 api = login()
-user = api.get_user("arzdou")
+user = api.get_user("PokeCard_bot")
 url = user.profile_image_url[:-11]+'.jpg'
 
 response = requests.get(url)
 img = Image.open(BytesIO(response.content))
 
-color, counts = analyze_image(img)
+color = analyze_image(img)
 color = [[c] for c in color]
 plt.imshow(color)
 plt.show()
