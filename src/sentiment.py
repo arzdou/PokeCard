@@ -42,7 +42,9 @@ def analyze_image(image):
     pix = np.array(image).astype(int)
     rgb = pix.reshape(pix.shape[0] * pix.shape[1], 3).T
     color, counts = recursive_color(rgb)
-    return color, counts
+    max_counts = np.array(counts).argsort()[-3:][::-1]
+    reduced_colors = [color[c] for c in max_counts]
+    return reduced_colors
 
 
 def recursive_color(pix, bandwidth=5, smooth=True):
