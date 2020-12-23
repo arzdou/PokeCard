@@ -42,13 +42,13 @@ def main():
     api = tweepy.API(auth, wait_on_rate_limit=True,
                      wait_on_rate_limit_notify=True)
 
-
     stream = TweetsListener(api)
-    sreamingApi = tweepy.Stream(auth=api.auth, listener=stream)
+    streaming_api = tweepy.Stream(auth=api.auth, listener=stream)
 
-    sreamingApi.filter(
+    streaming_api.filter(
         track=["@PokeCard_bot"]
     )
+
 
 if __name__=="__main__":
     main()

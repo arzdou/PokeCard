@@ -29,7 +29,7 @@ def create_card(user=None):
     card = Image.new("RGBA", card_template.size, 'white')
 
     for i, image in enumerate(images_pokes):
-        x =resize_factor*(300 + 170*(i%3)) - image.size[0]//2
+        x = resize_factor*(300 + 170*(i % 3)) - image.size[0]//2
         y = resize_factor*(150 + 115*(i//3)) - image.size[1]//2
         card.paste(image, (int(x), int(y)), image)
 
@@ -41,7 +41,7 @@ def create_card(user=None):
 
     font = ImageFont.truetype('images/fonts/LEMONMILK-Regular.otf', 16)
     draw = ImageDraw.Draw(card)
-    draw.text((resize_factor*450, resize_factor*45), name, (0,0,0), font=font)
+    draw.text((resize_factor*450, resize_factor*45), name, (0, 0, 0), font=font)
 
     card.save("output.png")
     return card
