@@ -3,11 +3,6 @@ from src.sentiment import *
 import tweepy
 import json
 
-from PIL import Image
-import requests
-from io import BytesIO
-import matplotlib.pyplot as plt
-
 
 def login():
     with open("keys.json", "r") as infile:
@@ -19,13 +14,5 @@ def login():
 
 
 api = login()
-user = api.get_user("PokeCard_bot")
-url = user.profile_image_url[:-11]+'.jpg'
-
-response = requests.get(url)
-img = Image.open(BytesIO(response.content))
-
-color = analyze_image(img)
-color = [[c] for c in color]
-plt.imshow(color)
-plt.show()
+user = api.get_user("arzdou")
+create_card(user).show()
