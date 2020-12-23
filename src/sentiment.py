@@ -48,7 +48,7 @@ def analyze_image(image):
     c = 1
     for i in idx[1:]:
         dist = np.array(reduced_color)-np.array(color[i])
-        if np.linalg.norm(dist) > 150:
+        if (np.linalg.norm(dist, axis=1) > 100).all():
             reduced_color = np.append(reduced_color, [color[i]], axis=0)
             c += 1
         if c == 3:
