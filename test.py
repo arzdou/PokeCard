@@ -1,10 +1,12 @@
 from src.card_scripts import create_card
 from src.sentiment import *
-import tweepy, json
+import tweepy
+import json
 
 from PIL import Image
 import requests
 from io import BytesIO
+import matplotlib.pyplot as plt
 
 
 def login():
@@ -18,9 +20,12 @@ def login():
 
 api = login()
 user = api.get_user("arzdou")
-url = user.profile_image_url
+url = user.profile_image_url[:-11]+'.jpg'
 
 response = requests.get(url)
 img = Image.open(BytesIO(response.content))
 
-analyze_image(img)
+color, counts = analyze_image(img)
+color = [[c] for c in color]
+plt.imshow(color)
+plt.show()
