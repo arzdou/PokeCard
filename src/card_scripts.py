@@ -1,4 +1,7 @@
+import requests
+from io import BytesIO
 from random import sample
+from src.sentiment import analyze_image
 from PIL import Image, ImageFont, ImageDraw
 
 
@@ -7,6 +10,11 @@ def create_card(user=None):
         trainers = file.read()[:-1].split("\n")
     id_trainer = sample(trainers, 1)[0]
     id_pokes = sample(range(1,152), 6)
+
+    url = user.profile_image_url[:-11] + '.jpg'
+    response = requests.get(url)
+    img = Image.open(BytesIO(response.content))
+    colors = analyze_image(img)
 
     try:
         name = user.screen_name
@@ -42,6 +50,11 @@ def create_card(user=None):
     font = ImageFont.truetype('images/fonts/LEMONMILK-Regular.otf', 16)
     draw = ImageDraw.Draw(card)
     draw.text((resize_factor*450, resize_factor*45), name, (0, 0, 0), font=font)
+
+    for idx, c in enumerate(colors):
+        pos = [50 + idx * 50, 300, 85 + idx * 50, 335]
+        pos = [p*resize_factor for p in pos]
+        draw.rectangle(pos, fill=tuple(c))
 
     card.save("output.png")
     return card
