@@ -1,16 +1,26 @@
 from src.card_scripts import create_card
-from src.sentiment import extract_info
+from src.sentiment import *
 import tweepy, json
 
-with open("keys.json", "r") as infile:
-    api_key, api_skey, access_token, access_stoken = json.load(infile).values()
+from PIL import Image
+import requests
+from io import BytesIO
 
-auth = tweepy.OAuthHandler(api_key, api_skey)
-auth.set_access_token(access_token, access_stoken)
 
-api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+def login():
+    with open("keys.json", "r") as infile:
+        api_key, api_skey, access_token, access_stoken = json.load(infile).values()
+    auth = tweepy.OAuthHandler(api_key, api_skey)
+    auth.set_access_token(access_token, access_stoken)
+    twitter_api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+    return twitter_api
 
+
+api = login()
 user = api.get_user("arzdou")
+url = user.profile_image_url
 
-df = extract_info(api, user)
-print(df)
+response = requests.get(url)
+img = Image.open(BytesIO(response.content))
+
+analyze_image(img)

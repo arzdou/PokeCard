@@ -1,4 +1,5 @@
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+import numpy as np
 from googletrans import Translator
 import pandas as pd
 import re
@@ -35,3 +36,7 @@ def clean_text(text):
     text = re.sub(r'https?:\/\/\S+', '', text)
     text = text.lower()
     return text
+
+
+def analyze_image(image):
+    pix = np.array(image)
