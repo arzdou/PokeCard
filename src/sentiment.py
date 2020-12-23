@@ -42,9 +42,18 @@ def analyze_image(image):
     pix = np.array(image).astype(int)
     rgb = pix.reshape(pix.shape[0] * pix.shape[1], 3).T
     color, counts = recursive_color(rgb)
-    max_counts = np.array(counts).argsort()[-3:][::-1]
-    reduced_colors = [color[c] for c in max_counts]
-    return reduced_colors
+
+    idx = np.argsort(counts)[::-1]
+    reduced_color = [color[idx[0]]]
+    c = 1
+    for i in idx[1:]:
+        dist = np.array(reduced_color)-np.array(color[i])
+        if np.linalg.norm(dist) > 150:
+            reduced_color = np.append(reduced_color, [color[i]], axis=0)
+            c += 1
+        if c == 3:
+            break
+    return reduced_color
 
 
 def recursive_color(pix, bandwidth=5, smooth=True):
